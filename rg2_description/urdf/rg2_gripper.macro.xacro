@@ -1,0 +1,198 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="rg2_gripper" params="parent">
+    <!-- Properties -->
+    <xacro:property name="PI" value="3.14159265359" />
+    <xacro:property name="effort" value="10.6" />
+    <xacro:property name="velocity" value="3.14" />
+
+    <!-- Inertial Macro -->
+    <xacro:macro name="default_inertial" params="mass">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="${mass}" />
+        <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+      </inertial>
+    </xacro:macro>
+
+    <!-- Material Color Macro -->
+    <xacro:macro name="color_visual" params="color_name" >
+      <material name="${color_name}">
+        <xacro:if value="${color_name == 'black'}">
+          <color rgba="0.0 0.0 0.0 1.0"/>
+        </xacro:if>
+        <xacro:if value="${color_name == 'white'}">
+          <color rgba="1.0 1.0 1.0 1.0"/>
+        </xacro:if>
+      </material>
+    </xacro:macro>
+
+    <!-- Links -->
+    <link name="rg2_base">
+      <xacro:default_inertial mass="1.0"/>
+      <visual>
+        <geometry>
+          <mesh filename="package://rg2_description/meshes/visual/RG2_Hand_vis.STL"/>
+        </geometry>
+        <xacro:color_visual color_name='white' />
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://rg2_description/meshes/collision/RG2_Hand_col.STL"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="l_moment_arm_link">
+      <xacro:default_inertial mass="0.16"/>
+      <visual>
+        <geometry>
+          <mesh filename="package://rg2_description/meshes/visual/RG2_LeftMomentArm_vis.STL"/>
+        </geometry>
+        <xacro:color_visual color_name='white' />
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://rg2_description/meshes/collision/RG2_LeftMomentArm_col.STL"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="l_finger_link">
+      <xacro:default_inertial mass="0.08"/>
+      <visual>
+        <geometry>
+          <mesh filename="package://rg2_description/meshes/visual/RG2_LeftFinger_vis.STL"/>
+        </geometry>
+        <xacro:color_visual color_name='black' />
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://rg2_description/meshes/collision/RG2_LeftFinger_col.STL"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="l_truss_arm_link">
+      <xacro:default_inertial mass="0.07"/>
+      <visual>
+        <geometry>
+          <mesh filename="package://rg2_description/meshes/visual/RG2_LeftTrussArm_vis.STL"/>
+        </geometry>
+        <xacro:color_visual color_name='white' />
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://rg2_description/meshes/collision/RG2_LeftTrussArm_col.STL"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="r_moment_arm_link">
+      <xacro:default_inertial mass="0.16"/>
+      <visual>
+        <geometry>
+          <mesh filename="package://rg2_description/meshes/visual/RG2_RightMomentArm_vis.STL"/>
+        </geometry>
+        <xacro:color_visual color_name='white' />
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://rg2_description/meshes/collision/RG2_RightMomentArm_col.STL"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="r_finger_link">
+      <xacro:default_inertial mass="0.08"/>
+      <visual>
+        <geometry>
+          <mesh filename="package://rg2_description/meshes/visual/RG2_RightFinger_vis.STL"/>
+        </geometry>
+        <xacro:color_visual color_name='black' />
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://rg2_description/meshes/collision/RG2_RightFinger_col.STL"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="r_truss_arm_link">
+      <xacro:default_inertial mass="0.07"/>
+      <visual>
+        <geometry>
+          <mesh filename="package://rg2_description/meshes/visual/RG2_RightTrussArm_vis.STL"/>
+        </geometry>
+        <xacro:color_visual color_name='white' />
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://rg2_description/meshes/collision/RG2_RightTrussArm_col.STL"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- Joints -->
+    <joint name="rg2_mount_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="rg2_base"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="gripper_joint" type="revolute">
+      <parent link="rg2_base"/>
+      <child link="l_moment_arm_link"/>
+      <origin xyz="0.105 0.017 0.010"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="-0.45" upper="${PI*0.5}" effort="${effort}" velocity="${velocity}"/>
+    </joint>
+
+    <joint name="l_finger_2_joint" type="revolute">
+      <parent link="l_moment_arm_link"/>
+      <child link="l_finger_link"/>
+      <origin xyz="0.049 0.026 0.000"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="-${PI/2}" upper="${PI/2}" effort="${effort}" velocity="${velocity}"/>
+      <mimic joint="gripper_joint" multiplier="-1"/>
+    </joint>
+
+    <joint name="l_finger_passive_joint" type="revolute">
+      <parent link="rg2_base"/>
+      <child link="l_truss_arm_link"/>
+      <origin xyz="0.122 0.008 0.010"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="-${PI/2}" upper="${PI/2}" effort="${effort}" velocity="${velocity}"/>
+      <mimic joint="gripper_joint" multiplier="1"/>
+    </joint>
+
+    <joint name="r_finger_1_joint" type="revolute">
+      <parent link="rg2_base"/>
+      <child link="r_moment_arm_link"/>
+      <origin xyz="0.105 -0.017 0.010"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="-${PI/2}" upper="${PI/2}" effort="${effort}" velocity="${velocity}"/>
+      <mimic joint="gripper_joint" multiplier="-1"/>
+    </joint>
+
+    <joint name="r_finger_2_joint" type="revolute">
+      <parent link="r_moment_arm_link"/>
+      <child link="r_finger_link"/>
+      <origin xyz="0.049 -0.026 0.000"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="-${PI/2}" upper="${PI/2}" effort="${effort}" velocity="${velocity}"/>
+      <mimic joint="gripper_joint" multiplier="1"/>
+    </joint>
+
+    <joint name="r_finger_passive_joint" type="revolute">
+      <parent link="rg2_base"/>
+      <child link="r_truss_arm_link"/>
+      <origin xyz="0.122 -0.008 0.010"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="-${PI/2}" upper="${PI/2}" effort="${effort}" velocity="${velocity}"/>
+      <mimic joint="gripper_joint" multiplier="-1"/>
+    </joint>
+  </xacro:macro>
+
+</robot>

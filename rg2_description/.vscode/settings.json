@@ -1,0 +1,18 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/weed/ros2_ws/build/my_urdf",
+        "/home/weed/ros2_ws/install/my_urdf/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages",
+        "/path/to/ModernRobotics/Python"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/weed/ros2_ws/build/my_urdf",
+        "/home/weed/ros2_ws/install/my_urdf/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages",
+        "/path/to/ModernRobotics/Python"
+    ]
+}

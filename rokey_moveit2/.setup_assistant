@@ -1,0 +1,25 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: main_description
+    relative_path: urdf/m0609_rg2.urdf
+  srdf:
+    relative_path: config/m0609.srdf
+  package_settings:
+    author_name: joonmo han
+    author_email: jjoonmo0212@gmail.com
+    generated_timestamp: 1750988494
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity

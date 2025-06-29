@@ -1,7 +1,8 @@
 ![ROS 2 Humble](https://img.shields.io/badge/ROS2-Humble-blue?logo=ros&logoColor=white)
 ![Gazebo Ignition](https://img.shields.io/badge/Gazebo-Ignition-lightgrey?logo=gazebo)
 ![MoveIt2](https://img.shields.io/badge/MoveIt2-enabled-critical?logo=moveit)
-![License](https://img.shields.io/badge/license-MIT-green)
+![License](https://img.shields.io/badge/license-Apache_2.0-green)
+
 
 
 # rokey-easy-moveit2

@@ -10,7 +10,7 @@ moveit_controller_manager: moveit_simple_controller_manager/MoveItSimpleControll
 moveit_simple_controller_manager:
   controller_names:
     - rokey_arm_controller
-    - rokey_hand_controller
+    # - rokey_hand_controller
 
   rokey_arm_controller:
     action_ns: follow_joint_trajectory

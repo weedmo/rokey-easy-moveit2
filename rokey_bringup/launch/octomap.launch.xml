@@ -1,0 +1,9 @@
+<launch>
+  <node pkg="octomap_server" exec="octomap_server_node" name="octomap_server">
+    <param name="resolution" value="0.05" />
+
+    <remap from="/cloud_in" to="/camera/camera/depth/color/points"/>
+    <param name="sensor_model.max_range" value="5.0" />
+    <param name="frame_id" value="camera_depth_optical_frame"/>
+  </node>
+</launch>

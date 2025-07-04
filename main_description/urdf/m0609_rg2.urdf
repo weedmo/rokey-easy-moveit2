@@ -22,12 +22,12 @@
 				</geometry>
 			</visual>
 		</link>
-		<!-- <link name="base"/>
+		<link name="base"/>
 		<joint name="base_link-base" type="fixed">
 			<origin rpy="0 0 0" xyz="0 0 0.450"/>
 			<parent link="base_link"/>
 			<child link="base"/>
-		</joint> -->
+		</joint>
 		<!-- joint 1 -->
 		<joint name="joint_1" type="revolute">
 			<parent link="base_link" />
@@ -466,12 +466,19 @@
             <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0.0" ixz="0.0" iyz="0.0"/>
         </inertial>
         </link>
+		
+		<link name="camera_depth_optical_frame"/>
+		<joint name="camera_to_tool" type="fixed">
+			<parent link="cylinder_link"/>
+			<child link="camera_depth_optical_frame"/>
+			<origin xyz="0 0 0.0" rpy="0 -1.5707 0"/>
+		</joint>
 
         <!-- tool0에 고정된 joint -->
         <joint name="link6-cylinder_link" type="fixed">
-        <parent link="link_6"/>
-        <child link="cylinder_link"/>
-        <origin xyz="0 0 0.005" rpy="0 -1.5707 0"/>
+			<parent link="link_6"/>
+			<child link="cylinder_link"/>
+			<origin xyz="0 0 0.005" rpy="0 -1.5707 0"/>
         </joint>
 
         <joint name="link6-gripper_base_link" type="fixed">

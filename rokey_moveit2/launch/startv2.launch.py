@@ -46,7 +46,7 @@ def rviz_node_function(context):
         .robot_description(file_path=f"config/{model_value}.urdf.xacro")
         .robot_description_semantic(file_path=f"config/{model_value}.srdf")
         .trajectory_execution(file_path="config/moveit_controllers.yaml")
-        .sensors_3d(file_path="config/sensors_3d.yaml")
+        # .sensors_3d(file_path="config/sensors_3d.yaml")
         .to_moveit_configs()
     )
     run_move_group_node = Node(
@@ -91,7 +91,7 @@ def generate_launch_description():
         DeclareLaunchArgument('gui',   default_value = 'false',     description = 'Start RViz2'    ),
         DeclareLaunchArgument('gz',    default_value = 'false',     description = 'USE GAZEBO SIM'    ),
         DeclareLaunchArgument('rt_host',    default_value = '192.168.137.50',     description = 'ROBOT_RT_IP'    ),
-        
+        DeclareLaunchArgument('gripper', default_value='rg2', description='ROBOT_GRIPPER'),
     ]
     xacro_path = os.path.join( get_package_share_directory('dsr_description2'), 'xacro')
     # gui = LaunchConfiguration("gui")
@@ -103,8 +103,8 @@ def generate_launch_description():
             " ",
             PathJoinSubstitution(
                 [
-                    FindPackageShare("dsr_description2"),
-                    "xacro",
+                    FindPackageShare("main_description"),
+                    "urdf",
                     LaunchConfiguration('model'),
                 ]
             ),
@@ -115,6 +115,7 @@ def generate_launch_description():
             " port:=", LaunchConfiguration('port'),
             " mode:=", LaunchConfiguration('mode'),
             " model:=", LaunchConfiguration('model'),
+            " gripper:=", LaunchConfiguration('gripper'),
         ]
     )
 
@@ -141,7 +142,7 @@ def generate_launch_description():
             {"port":    LaunchConfiguration('port')  },
             {"mode":    LaunchConfiguration('mode')  },
             {"model":   LaunchConfiguration('model') },
-            {"gripper": "none"      },
+            {"gripper": "rg2"      },
             {"mobile":  "none"      },
             {"rt_host":  LaunchConfiguration('rt_host')      },
             #parameters_file_path       # 파라미터 설정을 동일이름으로 launch 파일과 yaml 파일에서 할 경우 yaml 파일로 셋팅된다.    
